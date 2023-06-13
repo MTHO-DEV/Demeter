@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "145167577543",
+    "project_id": "instagram-clone-a9055",
+    "storage_bucket": "instagram-clone-a9055.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145167577543:android:c613f166c59f6cc9bf29e2",
+        "android_client_info": {
+          "package_name": "com.example.demeter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "145167577543-g2f84l10a60ubl0e1f112ngabapdte1a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVMdV98mekqtOZDtd3CC1Un0kGo_cxdiM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "145167577543-g2f84l10a60ubl0e1f112ngabapdte1a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
