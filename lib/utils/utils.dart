@@ -20,3 +20,34 @@ showSnackBar(String content, BuildContext context) {
     ),
   );
 }
+
+String displayPublishDate(DateTime dt1) {
+  String publishDate = '';
+
+  final difference = DateTime.now().difference(dt1);
+
+  if (difference.inDays > 7) {
+    // show difference in week
+    publishDate = '${difference.inDays ~/ 7} w';
+  } else {
+    if (difference.inHours > 24) {
+      // show difference in days
+      publishDate = '${difference.inDays} d';
+    } else {
+      if (difference.inMinutes > 60) {
+        // show difference in hours
+        publishDate = '${difference.inHours} h';
+      } else {
+        if (difference.inSeconds > 60) {
+          // show difference in minutes
+          publishDate = '${difference.inMinutes} min';
+        } else {
+          // show "just now"
+          publishDate = 'just now';
+        }
+      }
+    }
+  }
+
+  return publishDate;
+}
