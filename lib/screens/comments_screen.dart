@@ -101,6 +101,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                             ),
                     ),
                     Expanded(
+                      flex: 1,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 5,
@@ -140,6 +141,116 @@ class _CommentsScreenState extends State<CommentsScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  void showCommentBottomSheet(BuildContext context, dynamic snap) {
+    final model.User? user = Provider.of<UserProvider>(context).getUser;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection('posts')
+                              .doc(snap['postId'])
+                              .collection('comments')
+                              .orderBy(
+                                'datePublished',
+                                descending: true,
+                              )
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+
+                            return ListView.builder(
+                                itemCount:
+                                    (snapshot.data as dynamic).docs.length,
+                                itemBuilder: (context, index) => CommentCard(
+                                      snap: (snapshot.data as dynamic)
+                                          .docs[index]
+                                          .data(),
+                                    ));
+                          }),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: user != null
+                                ? CircleAvatar(
+                                    radius: 20,
+                                    backgroundImage:
+                                        NetworkImage(user.photoUrl),
+                                  )
+                                : const CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: lightDemeter,
+                                  ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 5,
+                              ),
+                              child: TextFieldInput(
+                                textEditingController: _commentController,
+                                hintText: user != null
+                                    ? "Comment as ${user.username}..."
+                                    : "Comment...",
+                                textInputType: TextInputType.text,
+                              ),
+                            ),
+                          ),
+                          if (user != null)
+                            IconButton(
+                              onPressed: () async {
+                                String res = await FirestoreMethods()
+                                    .postComment(
+                                        widget.snap['postId'],
+                                        _commentController.text,
+                                        user.uid,
+                                        user.username,
+                                        user.photoUrl);
+                                if (res == 'success') {
+                                  setState(() {
+                                    _commentController.text = '';
+                                  });
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.send,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

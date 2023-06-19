@@ -197,7 +197,8 @@ class _PostCardState extends State<PostCard> {
               ),
               IconButton(
                 onPressed: () {
-                  showModalBottomSheet(
+                  CommentsScreen(snap: widget.snap);
+                  /*showModalBottomSheet(
                     isScrollControlled: true,
                     context: context,
                     backgroundColor: greenDemeter,
@@ -212,7 +213,7 @@ class _PostCardState extends State<PostCard> {
                         snap: widget.snap,
                       );
                     },
-                  );
+                  );*/
                 },
                 icon: Icon(
                   Icons.comment_outlined,
